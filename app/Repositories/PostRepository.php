@@ -29,12 +29,12 @@ class PostRepository extends BaseRepository
         ]);
     }
 
-    public function update(Post $post)
+    public function update(Post $post): void
     {
         $post->update(['updated_at' => Carbon::now()]);
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $post): void
     {
         $post->delete();
     }
