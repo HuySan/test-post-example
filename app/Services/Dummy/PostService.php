@@ -39,10 +39,9 @@ class PostService
     public function index(): array
     {
         $dummyIds = $this->postRepository->getAllDummyIds()['data'];
-
         $res = [];
         foreach ($dummyIds as $dummyId) {
-            $response = $this->client->get("https://dummyjson.com/posts/1");
+            $response = $this->client->get(config('app.api_url.dummy') . $dummyId);
             $responseData = json_decode($response->getBody()->getContents(), true);
 
             $res[] = $responseData;
@@ -54,7 +53,7 @@ class PostService
 
     public function store(): PostGetData
     {
-        $response = $this->client->post('https://dummyjson.com/posts/add', $this->options);
+        $response = $this->client->post(config('app.api_url.dummy') . 'add', $this->options);
 
         $responseData = json_decode($response->getBody()->getContents(), true);
 
@@ -69,7 +68,7 @@ class PostService
 
         $this->postRepository->update($post);
 
-        $response = $this->client->put("https://dummyjson.com/posts/$post->dummy_post_id", $this->options);
+        $response = $this->client->put(config('app.api_url.dummy') . $post->dummy_post_id, $this->options);
 
         $responseData = json_decode($response->getBody()->getContents(), true);
 
@@ -84,7 +83,7 @@ class PostService
         $this->postRepository->destroy($post);
 
         $response = $this->client
-            ->delete("https://dummyjson.com/posts/$post->dummy_post_id", $this->options);
+            ->delete(config('app.api_url.dummy') . $post->dummy_post_id, $this->options);
 
         json_decode($response->getBody()->getContents(), true);
     }
